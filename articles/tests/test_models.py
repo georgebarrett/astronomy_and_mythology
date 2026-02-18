@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 
 from articles.models import Article
 
+
 def test_image_file(filename='test.jpg'):
     return SimpleUploadedFile(
         name=filename,
@@ -82,3 +83,13 @@ class ArticleModelTest(TestCase):
 
         with self.assertRaises(ValidationError):
             article.full_clean()
+
+    def test_str_returns_title(self):
+        self.assertEqual(str(self.article), 'Pluto and Hades')
+
+    def test_default_status_is_draft(self):
+        self.assertEqual(self.article.status, Article.Status.DRAFT)
+
+    def test_created_and_updated_fields_are_set(self):
+        self.assertIsNotNone(self.article.created)
+        self.assertIsNotNone(self.article.updated)
